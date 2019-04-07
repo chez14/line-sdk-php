@@ -1,0 +1,16 @@
+{
+    "name": "chez14/line-sdk",
+    "description": "Line SDK Client for PHP. Used for simple Login API or Social API.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christianto",
+            "email": "chris@christianto.net"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    }
+}
