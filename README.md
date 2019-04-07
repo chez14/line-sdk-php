@@ -16,7 +16,7 @@ $ composer require chez14/line-sdk
 ```
 
 ## Create a Channel 
-1. Get a LINE Channel Secret and it's ID. Follow [this step](https://developers.line.biz/en/docs/line-login/getting-started/) to get started.
+1. Create a LINE Channel, follow [this step](https://developers.line.biz/en/docs/line-login/getting-started/) to get started. Or simply use the one you have.
 2. Go to [LINE Developer Console](https://developers.line.biz/console/), grab the Channel Secret and Channel ID.
 
 ## Creating API Instance
@@ -26,6 +26,7 @@ $ composer require chez14/line-sdk
 Check this API Documentation (tbd), and check LINE's corresponding documentations.
 
 Have fun!
+
 ![All Might - Thumbs Up](https://thumbs.gfycat.com/GrandScratchyCicada-small.gif)
 
 # License
