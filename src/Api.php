@@ -7,7 +7,8 @@ class Api {
 
     protected
         $channel_secret,
-        $channel_id;
+        $channel_id,
+        $token;
 
 
     public function getChannelID() {
@@ -25,5 +26,25 @@ class Api {
     public function setChannelSecret($id) {
         $this->channel_secret = $id;
     }
+
+    public function getToken(Token $token) {
+        return $this->token;
+    }
+
+    public function setToken(Token $token) {
+        $this->token = $token;
+    }
+
+    /**
+     * Do a public GET call to api.
+     */
+    public function get($url, $param = [], $options = []) {
+
+    }
+
+    public function post($url, $param = [], $options = []) {
+
+    }
+
 
 }
