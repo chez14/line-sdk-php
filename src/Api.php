@@ -1,7 +1,7 @@
 <?php
 namespace LINE;
 
-class Api extends Interfaces\ApiInterface{
+class Api implements Interfaces\ApiInterface{
     public
         $api_url = "https://api.line.me/";
 
