@@ -41,6 +41,9 @@ echo $login->get_authorization_url("http://localhost/callback.php", [
     LINE\Login::SCOPE_PROFILE
 ]) . PHP_EOL;
 
+// will produce:
+// https://access.line.me/oauth2/v2.1/authorize?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fakun%2Foauth%2Fline&client_id=0123456789&scope=openid+profile&state=1OaoBjV9US69fzOx&prompt=consent
+
 // OR
 echo $login->get_authorization_url("http://localhost/callback.php", [
     "openid","profile"
