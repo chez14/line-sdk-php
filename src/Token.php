@@ -39,6 +39,18 @@ class Token {
         $this->id_token = $id;
     }
 
+    public function revoke() {
+        try {
+            $response = $this->api->post('revoke',[
+                'access_token' => $this->getAccessToken()
+            ]);
+        } catch (\Exception $e) {
+            //TODO: do some validation
+            return false;
+        }
+        return true;
+    }
+
     /**
      * @see https://developers.line.biz/en/docs/line-login/web/integrate-line-login/#spy-getting-an-access-token
      */
@@ -82,9 +94,7 @@ class Token {
     public function refresh():self {
         $response = $this->api->post('token',[
             'grant_type' => 'refresh_token',
-            'refresh_token' => $this->getRefreshToken(),
-            'client_id' => $this->api->getChannelID(),
-            'client_secret' => $this->api->getClientSecret()
+            'refresh_token' => $this->getRefreshToken()
         ]);
         $data = \json_decode($response->getBody(), true);
         $token = new self($this->api, $data['access_token'], $data['refresh_token']);
@@ -113,9 +123,7 @@ class Token {
     public static function fromAuthCode(string $auth_code, Api $api) {
         $response = $api->post('token',[
             'grant_type' => 'authorization_code',
-            'code' => $auth_code,
-            'client_id' => $api->getChannelID(),
-            'client_secret' => $api->getClientSecret()
+            'code' => $auth_code
         ]);
         $data = \json_decode($response->getBody(), true);
         $token = new self($api, $data['access_token'], $data['refresh_token']);
