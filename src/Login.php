@@ -51,6 +51,15 @@ class Login {
         }
 
 
-        return $this->api->api_url . "?" . http_build_query($request);
+        return $this->api->api_url . "authorize?" . http_build_query($request);
+    }
+
+    /**
+     * Autoparse from callback url. Call this when you're in callback controller / callback handler.
+     * Will throw exception automatically when error detected.
+     * 
+     */
+    public function parse_from_request() {
+        // TODO: Implement
     }
 }
