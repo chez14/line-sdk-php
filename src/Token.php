@@ -106,4 +106,19 @@ class Token {
         $temp = new self($api, $id_token, null);
         return $temp;
     }
+
+    /**
+     * Get token from auth code from Login handler.
+     */
+    public static function fromAuthCode(string $auth_code, Api $api) {
+        $response = $api->post('token',[
+            'grant_type' => 'authorization_code',
+            'code' => $auth_code,
+            'client_id' => $api->getChannelID(),
+            'client_secret' => $api->getClientSecret()
+        ]);
+        $data = \json_decode($response->getBody(), true);
+        $token = new self($api, $data['access_token'], $data['refresh_token']);
+        return $token;
+    }
 }
