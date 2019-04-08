@@ -10,7 +10,7 @@ class Login {
     protected
         $api;
 
-    public function __construct(Api $api) {
+    public function __construct(Interfaces\ApiInterface $api) {
         $this->api = $api;
     }
 

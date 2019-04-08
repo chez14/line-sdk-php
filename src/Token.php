@@ -11,7 +11,7 @@ class Token {
         $id_token,
         $refresh_token;
     
-    public function __construct($api, $id_token, $refresh_token) {
+    public function __construct(Interfaces\ApiInterface $api, string $id_token, string $refresh_token) {
         $this->api = $api;
         $this->id_token = $id_token;
         $this->refresh_token = $refresh_token;
