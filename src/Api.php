@@ -3,7 +3,7 @@ namespace LINE;
 
 class Api extends Interfaces\ApiInterface{
     public
-        $api_url = "https://api.line.me/oauth2/v2.1/";
+        $api_url = "https://api.line.me/";
 
     protected
         $channel_secret,

@@ -11,6 +11,9 @@ class Token {
         $id_token,
         $refresh_token;
     
+    public
+        $base_url = "oauth2/v2.1/";
+    
     public function __construct(Interfaces\ApiInterface $api, string $id_token, string $refresh_token) {
         $this->api = $api;
         $this->id_token = $id_token;
@@ -41,7 +44,7 @@ class Token {
 
     public function revoke() {
         try {
-            $response = $this->api->post('revoke',[
+            $response = $this->api->post($this->base_url . 'revoke',[
                 'access_token' => $this->getAccessToken()
             ]);
         } catch (\Exception $e) {
@@ -78,7 +81,7 @@ class Token {
      */
     public function verify():bool {
         try {
-            $response = $this->api->post('verify',[
+            $response = $this->api->post($this->base_url . 'verify',[
                 'access_token' => $this->getAccessToken()
             ]);
         } catch (\Exception $e) {
@@ -92,7 +95,7 @@ class Token {
      * Refresh this token
      */
     public function refresh():self {
-        $response = $this->api->post('token',[
+        $response = $this->api->post($this->base_url . 'token',[
             'grant_type' => 'refresh_token',
             'refresh_token' => $this->getRefreshToken()
         ]);
@@ -121,7 +124,7 @@ class Token {
      * Get token from auth code from Login handler.
      */
     public static function fromAuthCode(string $auth_code, Api $api) {
-        $response = $api->post('token',[
+        $response = $api->post(self::base_url . 'token',[
             'grant_type' => 'authorization_code',
             'code' => $auth_code
         ]);
