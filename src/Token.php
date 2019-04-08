@@ -42,7 +42,12 @@ class Token {
         $this->id_token = $id;
     }
 
-    public function revoke() {
+    /**
+     * Revoke this access token.
+     * 
+     * @return bool true if success full, otherwise we'll give you Exception instead.
+     */
+    public function revoke():bool {
         try {
             $response = $this->api->post($this->base_url . 'revoke',[
                 'access_token' => $this->getAccessToken()
@@ -55,10 +60,14 @@ class Token {
     }
 
     /**
+     * Validate the token using signature validation.
+     * 
      * @see https://developers.line.biz/en/docs/line-login/web/integrate-line-login/#spy-getting-an-access-token
+     * @param $token Token string that we want to validate.
+     * @param $nonce Nonce parameter validation. If not supplied/null, this will be ignored.
      */
     protected function validate_token($token, string $nonce = null) {
-        $token = (new Parser())->parse((string) $token);
+        $token = (new \Lcobucci\JWT\Parser())->parse((string) $token);
         
         $tokenVerifier = new \Lcobucci\JWT\ValidationData();
         $tokenVerifier->setIssuer('https://access.line.me');
@@ -76,8 +85,22 @@ class Token {
     }
 
     /**
+     * Get claims of the token, such as: 
+     * name, picture, email, exp (expiration), sub (user id from LINE).
+     * 
+     * @see https://developers.line.biz/en/docs/line-login/web/integrate-line-login/#payload
+     * @return array
+     */
+    public function getTokenInfo() {
+        $token = (new \Lcobucci\JWT\Parser())->parse($this->getAccessToken());
+
+        return $token->getClaims();
+    }
+
+    /**
      * Verify this token
      * 
+     * @return bool whether the Token is still valid and verified.
      */
     public function verify():bool {
         try {
@@ -92,7 +115,9 @@ class Token {
     }
 
     /**
-     * Refresh this token
+     * Refresh this token. New token will be returned as new object.
+     * 
+     * @return Token object with new Refresh token and ID Token.
      */
     public function refresh():self {
         $response = $this->api->post($this->base_url . 'token',[
@@ -106,6 +131,10 @@ class Token {
 
     /**
      * Get a token from refresh token.
+     * 
+     * This will automatically get new token from refresh token.
+     * 
+     * @return Token
      */
     public static function fromRefreshToken(string $refresh_token, Api $api):self {
         $temp = new self($api, null, $refresh_token);
@@ -114,6 +143,11 @@ class Token {
     
     /**
      * Create new token instance from just only a id_token.
+     * 
+     * This will return token with no refresh token, and will raise BadMethodCall Exception if you try to
+     * refresh it.
+     * 
+     * @return Token with no refresh token.
      */
     public static function fromIDToken(string $id_token, Api $api) {
         $temp = new self($api, $id_token, null);
@@ -122,6 +156,8 @@ class Token {
 
     /**
      * Get token from auth code from Login handler.
+     * 
+     * @return Token
      */
     public static function fromAuthCode(string $auth_code, Api $api) {
         $response = $api->post(self::base_url . 'token',[
