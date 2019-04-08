@@ -11,6 +11,7 @@
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": "^7.1",
         "guzzlehttp/guzzle": "^6.3",
         "lcobucci/jwt": "^3.2",
         "ircmaxell/random-lib": "^1.2"
