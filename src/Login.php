@@ -22,7 +22,7 @@ class Login {
      * 
      * @return string URl encoded string of that Auth link
      */
-    public function get_authorization_url(string $redirect_uri, array $scope, string $state = null, string $nonce = null, string $prompt="consent", int $max_age=null, string $bot_prompt = null) {
+    public function get_authorization_url(string $redirect_uri, array $scope, string $state = null, string $nonce = null, string $response_type = 'code', string $prompt="consent", int $max_age=null, string $bot_prompt = null) {
         if(count($scope) <= 1) {
             throw new \InvalidArgumentException("Scope must have at least 1 scope.");
         }
@@ -34,7 +34,8 @@ class Login {
         }
 
         $request = [
-            "redirect_url" => $redirect_uri,
+            "response_type" => $response_type,
+            "redirect_uri" => $redirect_uri,
             "client_id" => $this->api->getChannelID(),
             "scope" => \implode(" ",$scope),
             "state" => $state
@@ -60,7 +61,7 @@ class Login {
         }
 
 
-        return $this->api->api_url . "authorize?" . http_build_query($request);
+        return "https://access.line.me/oauth2/v2.1/authorize?" . http_build_query($request);
     }
 
     /**
