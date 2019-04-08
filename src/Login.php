@@ -7,6 +7,9 @@ class Login {
         SCOPE_OPENID = "openid",
         SCOPE_EMAIL = "email";
     
+    public 
+        $state_session = "LINE_SESS_AUTH_STATE";
+    
     protected
         $api;
 
@@ -19,9 +22,15 @@ class Login {
      * 
      * @return string URl encoded string of that Auth link
      */
-    public function get_authorization_url(string $redirect_uri, array $scope, string $state, string $nonce = null, string $prompt="consent", int $max_age=null, string $bot_prompt = null) {
+    public function get_authorization_url(string $redirect_uri, array $scope, string $state = null, string $nonce = null, string $prompt="consent", int $max_age=null, string $bot_prompt = null) {
         if(count($scope) <= 1) {
             throw new \InvalidArgumentException("Scope must have at least 1 scope.");
+        }
+
+        if($state === null ){
+            $randomgen = (new \RandomLib\Factory())->getLowStrengthGenerator();
+            $_SESSION[$this->state_session] = $randomgen->generateString(16, \RandomLib\Generator::CHAR_ALNUM);
+            $state = $_SESSION[$this->state_session];
         }
 
         $request = [
@@ -59,7 +68,27 @@ class Login {
      * Will throw exception automatically when error detected.
      * 
      */
-    public function parse_from_request() {
-        // TODO: Implement
+    public function parse_from_request(
+        string $last_state = null,
+        string $GET_code = "code", 
+        string $GET_state = "state", 
+        string $GET_friendship_status_changed="friendship_status_changed", 
+        string $GET_error="error", 
+        string $GET_error_description="error_description") {
+        
+        if($last_state === null ) {
+            $last_state = $_SESSION[$this->state_session];
+        }
+
+        if($last_state != $_GET[$GET_state]) {
+            throw new \InvalidArgumentException("Last state is not the same with given state. Got " . $_GET[$GET_state] . ". Expecting " . $last_state . ".");
+        }
+
+        if(array_key_exists($_GET, $GET_error)) {
+            throw new Exceptions\LoginFailedExceptions($_GET[$GET_error_description], $_GET[$GET_error]);
+        }
+
+        $token = Token::fromAuthCode($GET_code);
+        return $token;
     }
 }
