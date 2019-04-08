@@ -10,7 +10,11 @@ interface ApiInterface {
 
     public function setChannelSecret(string $id):void;
 
-    public function post($url, $param = [], $options = [], $auth_type="client");
+    public function getToken():Token;
+
+    public function setToken(Token $token):void;
 
     public function get($url, $param = [], $options = [], $auth_type="client");
+    
+    public function post($url, $param = [], $options = [], $auth_type="client");
 }

@@ -49,27 +49,27 @@ class Api extends Interfaces\ApiInterface{
         }
     }
 
-    public function getChannelID() {
+    public function getChannelID():string {
         return $this->channel_id;
     }
 
-    public function setChannelID($id) {
+    public function setChannelID(string $id):void {
         $this->channel_id = $id;
     }
 
-    public function getChannelSecret() {
+    public function getChannelSecret():string {
         return $this->channel_secret;
     }
     
-    public function setChannelSecret($id) {
+    public function setChannelSecret(string $id):void {
         $this->channel_secret = $id;
     }
 
-    public function getToken() {
+    public function getToken():Token {
         return $this->token;
     }
 
-    public function setToken(Token $token) {
+    public function setToken(Token $token):void {
         $this->token = $token;
     }
 
