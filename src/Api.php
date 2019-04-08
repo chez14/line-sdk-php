@@ -1,7 +1,7 @@
 <?php
 namespace LINE;
 
-class Api {
+class Api extends Interfaces\ApiInterface{
     public
         $api_url = "https://api.line.me/oauth2/v2.1/";
 
@@ -128,6 +128,4 @@ class Api {
         
         return $this->guzzle->request('POST', $url, $request_param);
     }
-
-
 }
