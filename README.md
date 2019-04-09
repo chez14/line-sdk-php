@@ -1,4 +1,7 @@
 # line-sdk-php
+[![PHP from Packagist](https://img.shields.io/packagist/php-v/chez14/line-sdk.svg?style=flat-square)](https://github.com/chez14/line-sdk-php)
+ [![Travis (.org)](https://img.shields.io/travis/chez14/line-sdk-php.svg?style=flat-square)](https://github.com/chez14/line-sdk-php) [![Packagist](https://img.shields.io/packagist/v/chez14/line-sdk.svg?style=flat-square)](https://packagist.org/packages/chez14/line-sdk) [![GitHub release](https://img.shields.io/github/release/chez14/line-sdk-php.svg?style=flat-square)](https://github.com/chez14/line-sdk-php)
+ 
 Line SDK Client for PHP. Used for simple Login API or Social API.
 
 **STILL UNSTABLE, I'M STILL TESTING THESE APIs**. Do at your own risk.
