@@ -1,6 +1,7 @@
 {
     "name": "chez14/line-sdk",
     "description": "Line SDK Client for PHP. Used for simple Login API or Social API.",
+    "keywords": ["LINE", "LINE SDK","SDK", "PHP", "Login API", "LINE Login"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -20,5 +21,9 @@
         "psr-4": {
             "LINE\\": "src/"
         }
+    },
+    "scripts": {
+        "test-dry" : "phpunit --testdox",
+        "test":"composer require phpunit/phpunit && phpunit --testdox"
     }
 }
