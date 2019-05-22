@@ -1,19 +1,21 @@
 <?php
 namespace LINE;
 
-class Login {
+class Login
+{
     public const
         SCOPE_PROFILE = "profile",
         SCOPE_OPENID = "openid",
         SCOPE_EMAIL = "email";
-    
-    public 
+
+    public
         $state_session = "LINE_SESS_AUTH_STATE";
-    
+
     protected
         $api;
 
-    public function __construct(Interfaces\ApiInterface $api) {
+    public function __construct(Interfaces\ApiInterface $api)
+    {
         $this->api = $api;
     }
 
@@ -22,12 +24,13 @@ class Login {
      * 
      * @return string URl encoded string of that Auth link
      */
-    public function get_authorization_url(string $redirect_uri, array $scope, string $state = null, string $nonce = null, string $response_type = 'code', string $prompt="consent", int $max_age=null, string $bot_prompt = null) {
-        if(count($scope) <= 1) {
+    public function get_authorization_url(string $redirect_uri, array $scope, string $state = null, string $nonce = null, string $response_type = 'code', string $prompt = "consent", int $max_age = null, string $bot_prompt = null)
+    {
+        if (count($scope) <= 1) {
             throw new \InvalidArgumentException("Scope must have at least 1 scope.");
         }
 
-        if($state === null ){
+        if ($state === null) {
             $randomgen = (new \RandomLib\Factory())->getLowStrengthGenerator();
             $_SESSION[$this->state_session] = $randomgen->generateString(16, \RandomLib\Generator::CHAR_ALNUM);
             $state = $_SESSION[$this->state_session];
@@ -37,24 +40,24 @@ class Login {
             "response_type" => $response_type,
             "redirect_uri" => $redirect_uri,
             "client_id" => $this->api->getChannelID(),
-            "scope" => \implode(" ",$scope),
+            "scope" => \implode(" ", $scope),
             "state" => $state
         ];
 
-        if($nonce) {
+        if ($nonce) {
             $request['nonce'] = $nonce;
         }
 
-        if($prompt) {
+        if ($prompt) {
             $request['prompt'] = $prompt;
         }
 
-        if($max_age) {
+        if ($max_age) {
             $request['max_age'] = $max_age;
         }
 
-        if($bot_prompt) {
-            if(!\in_array($bot_prompt, ["normal", "aggressive"])) {
+        if ($bot_prompt) {
+            if (!\in_array($bot_prompt, ["normal", "aggressive"])) {
                 throw new \InvalidArgumentException("Unknown value supplied to Bot Prompt. It must be either `normal` or `aggressive`, got " . $bot_prompt);
             }
             $request['bot_prompt'] = $bot_prompt;
@@ -71,25 +74,26 @@ class Login {
      */
     public function parse_from_request(
         string $last_state = null,
-        string $GET_code = "code", 
-        string $GET_state = "state", 
-        string $GET_friendship_status_changed="friendship_status_changed", 
-        string $GET_error="error", 
-        string $GET_error_description="error_description") {
-        
-        if($last_state === null ) {
+        string $GET_code = "code",
+        string $GET_state = "state",
+        string $GET_friendship_status_changed = "friendship_status_changed",
+        string $GET_error = "error",
+        string $GET_error_description = "error_description"
+    ) {
+
+        if ($last_state === null) {
             $last_state = $_SESSION[$this->state_session];
         }
 
-        if($last_state != $_GET[$GET_state]) {
+        if ($last_state != $_GET[$GET_state]) {
             throw new \InvalidArgumentException("Last state is not the same with given state. Got " . $_GET[$GET_state] . ". Expecting " . $last_state . ".");
         }
 
-        if(array_key_exists($_GET, $GET_error)) {
+        if (array_key_exists($GET_error, $_GET)) {
             throw new Exceptions\LoginFailedExceptions($_GET[$GET_error_description], $_GET[$GET_error]);
         }
 
-        $token = Token::fromAuthCode($GET_code);
+        $token = Token::fromAuthCode($GET_code, $this->api);
         return $token;
     }
 }

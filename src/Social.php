@@ -4,11 +4,13 @@ namespace LINE;
 /**
  * Social API. This only supports to get profile, and get friendship status.
  */
-class Social {
+class Social
+{
     protected
         $api;
 
-    public function __construct(Interfaces\ApiInterface $api) {
+    public function __construct(Interfaces\ApiInterface $api)
+    {
         $this->api = $api;
     }
 
@@ -18,8 +20,9 @@ class Social {
      * @see https://developers.line.biz/en/reference/social-api/#get-user-profile
      * @return Array Object of displayName, userId, pictureUrl, statusMessage
      */
-    public function getProfile() {
-        $response = $this->api->get('v2/profile',[], [], 'header');
+    public function getProfile()
+    {
+        $response = $this->api->get('v2/profile', [], [], 'header');
         return \json_decode($response->getBody(), true);
     }
 
@@ -30,8 +33,9 @@ class Social {
      * @see https://developers.line.biz/en/reference/social-api/#get-friendship-status
      * @return Array Object of friendFlag, with value: true if the user has added the bot as a friend and has not blocked the bot. 
      */
-    public function getFriendshipStatus() {
-        $response = $this->api->get('friendship/v1/status',[], [], 'header');
+    public function getFriendshipStatus()
+    {
+        $response = $this->api->get('friendship/v1/status', [], [], 'header');
         return \json_decode($response->getBody(), true);
     }
 }
