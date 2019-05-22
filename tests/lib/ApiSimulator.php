@@ -1,36 +1,22 @@
 <?php
 namespace Tests\Lib;
 
-class ApiSimulator implements \LINE\Interfaces\ApiInterface {
-    public function getChannelID():string{
-        
+class ApiSimulator extends \LINE\Api {
+    
+    protected
+        $handler_stack,
+        $container,
+        $history = [];
+
+    public function __construct($options) {
+
     }
 
-    public function setChannelID(string $id):void{
-        
-    }
-
-    public function getChannelSecret():string{
-        
-    }
-
-    public function setChannelSecret(string $id):void{
-        
-    }
-
-    public function getToken():\LINE\Token{
-        
-    }
-
-    public function setToken(\LINE\Token $token):void{
-        
-    }
-
-    public function get($url, $param, $options, $auth_type){
+    public function get($url, $param = [], $options = [], $auth_type="client"){
         
     }
     
-    public function post($url, $param, $options, $auth_type){
+    public function post($url, $param = [], $options = [], $auth_type="client"){
         
     }
 }

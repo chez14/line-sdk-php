@@ -14,7 +14,7 @@ class Token {
     public
         $base_url = "oauth2/v2.1/";
     
-    public function __construct(Interfaces\ApiInterface $api, string $id_token, string $refresh_token) {
+    public function __construct(Interfaces\ApiInterface $api, string $id_token = null, string $refresh_token = null) {
         $this->api = $api;
         $this->id_token = $id_token;
         $this->refresh_token = $refresh_token;
@@ -120,7 +120,7 @@ class Token {
      * @return Token object with new Refresh token and ID Token.
      */
     public function refresh():self {
-        $response = $this->api->post($this->base_url . 'token',[
+        $response = $this->api->post($this->base_url . 'token', [
             'grant_type' => 'refresh_token',
             'refresh_token' => $this->getRefreshToken()
         ]);
@@ -160,7 +160,7 @@ class Token {
      * @return Token
      */
     public static function fromAuthCode(string $auth_code, Api $api) {
-        $response = $api->post(self::base_url . 'token',[
+        $response = $api->post(self::$base_url . 'token',[
             'grant_type' => 'authorization_code',
             'code' => $auth_code
         ]);
