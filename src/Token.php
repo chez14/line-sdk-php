@@ -13,7 +13,7 @@ class Token
         $id_token,
         $refresh_token;
 
-    public
+    public static
         $base_url = "oauth2/v2.1/";
 
     public function __construct(Interfaces\ApiInterface $api, string $id_token = null, string $refresh_token = null)
@@ -57,7 +57,7 @@ class Token
     public function revoke(): bool
     {
         try {
-            $response = $this->api->post($this->base_url . 'revoke', [
+            $response = $this->api->post(self::$base_url . 'revoke', [
                 'access_token' => $this->getAccessToken()
             ]);
         } catch (\Exception $e) {
@@ -115,7 +115,7 @@ class Token
     public function verify(): bool
     {
         try {
-            $response = $this->api->post($this->base_url . 'verify', [
+            $response = $this->api->post(self::$base_url . 'verify', [
                 'access_token' => $this->getAccessToken()
             ]);
         } catch (\Exception $e) {
@@ -132,7 +132,7 @@ class Token
      */
     public function refresh(): self
     {
-        $response = $this->api->post($this->base_url . 'token', [
+        $response = $this->api->post(self::$base_url . 'token', [
             'grant_type' => 'refresh_token',
             'refresh_token' => $this->getRefreshToken()
         ]);
