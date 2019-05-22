@@ -173,11 +173,12 @@ class Token
      * 
      * @return Token
      */
-    public static function fromAuthCode(string $auth_code, Api $api)
+    public static function fromAuthCode(string $auth_code, String $redir_uri, Api $api)
     {
         $response = $api->post(self::$base_url . 'token', [
             'grant_type' => 'authorization_code',
-            'code' => $auth_code
+            'code' => $auth_code,
+            'redirect_uri' => $redir_uri
         ]);
         $data = \json_decode($response->getBody(), true);
         $token = new self($api, $data['access_token'], $data['refresh_token']);

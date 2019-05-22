@@ -73,6 +73,7 @@ class Login
      * 
      */
     public function parse_from_request(
+        string $return_uri,
         string $last_state = null,
         string $GET_code = "code",
         string $GET_state = "state",
@@ -93,7 +94,7 @@ class Login
             throw new Exceptions\LoginFailedExceptions($_GET[$GET_error_description], $_GET[$GET_error]);
         }
 
-        $token = Token::fromAuthCode($GET_code, $this->api);
+        $token = Token::fromAuthCode($GET_code, $return_uri, $this->api);
         return $token;
     }
 }
